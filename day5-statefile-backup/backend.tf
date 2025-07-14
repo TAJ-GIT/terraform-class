@@ -1,9 +1,11 @@
-terraform {
-  required_version = ">= 1.10.0"
+## with--dynamoDB ##
 
+terraform {
   backend "s3" {
-    bucket       = "qwsdfghjuytfcbju"   #bucket name
-    key          = "terraform.tfstate"
-    region = "us-east-1"
+    bucket         = "bucket-name"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
   }
 }
