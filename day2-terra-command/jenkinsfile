@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        TERRAFORM_DIR = 'day-2-terra-command'  // ✅ Folder path used in all Terraform steps
+        TERRAFORM_DIR = 'day2-terra-command'  // ✅ Folder path used in all Terraform steps
     }
 
     parameters {
