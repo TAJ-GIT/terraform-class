@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        TERRAFORM_DIR = 'day-2-terra-command'  // ✅ Folder path used in all Terraform steps
+    }
+
+    parameters {
+        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Choose Terraform action')
+    }
+
+    stages {
+        stage('Terraform Init') {
+            steps {
+                dir("${env.TERRAFORM_DIR}") {
+                    sh 'terraform init'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                dir("${env.TERRAFORM_DIR}") {
+                    sh 'terraform plan'
+                }
+            }
+        }
+
+        stage('Terraform Apply/Destroy') {
+            steps {
+                echo "⚙️ Running: terraform ${params.action} ..."
+                dir("${env.TERRAFORM_DIR}") {
+                    sh "terraform ${params.action} -auto-approve"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Terraform ${params.action} completed successfully."
+        }
+        failure {
+            echo "❌ Terraform ${params.action} failed."
+        }
+    }
+}
